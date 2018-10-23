@@ -1,0 +1,21 @@
+---
+- name: "Install packages to allow apt to use a repo over HTTPS"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ apt_packages }}"
+
+- name: "Add Docker Apt signing key"
+  apt_key:
+    url: "{{ docker_gpg_key_url }}"
+    state: present
+
+- name: "Add Docker repo"
+  apt_repository:
+    repo: "{{ docker_repo }}"
+    state: present
+
+- name: "Install Docker"
+  package:
+    name: docker-ce
+    state: present
